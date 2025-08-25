@@ -3,6 +3,7 @@
 #include <unistd.h>   // sleep, usleep
 #include <termios.h>  // getch
 #include <fcntl.h>    // kbhit
+#include <ctime>   // để random mồi
 using namespace std;
 
 void gotoxy(int column, int line) {
@@ -80,14 +81,27 @@ public:
         if (direction == 3) A[0].y = A[0].y - 1; // lên
     }
 };
+// Hàm tạo mồi random trong khung 40x20
+void generateFood(Point &food) {
+    food.x = rand() % 40 + 1;  // ngang
+    food.y = rand() % 20 + 1;  // dọc
+}
 
 int main() {
     SNAKE r;
+    Point food;
+srand(time(NULL));    // khởi tạo random seed
+generateFood(food);   // tạo mồi ban đầu
+
     int direction = 0;
     char t;
 
     system("clear");
     while (1) {
+        // Vẽ mồi
+gotoxy(food.x, food.y);
+cout << "O";
+
         if (kbhit()) {
             t = getch();
             if (t == 'a') direction = 2;
@@ -99,7 +113,17 @@ int main() {
         system("clear");
         r.Draw();
         r.Move(direction);
+        // Kiểm tra ăn mồi
+if (r.A[0].x == food.x && r.A[0].y == food.y) {
+    r.snake_length++;
+    r.A[r.snake_length - 1] = r.A[r.snake_length - 2]; 
+    generateFood(food);  // tạo mồi mới
+}
+
         usleep(200000); // 200ms
+       
+
+
     }
     return 0;
 }
