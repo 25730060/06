@@ -90,6 +90,7 @@ void generateFood(Point &food) {
 int main() {
     SNAKE r;
     Point food;
+    int score = 0;   // điểm ban đầu
 srand(time(NULL));    // khởi tạo random seed
 generateFood(food);   // tạo mồi ban đầu
 
