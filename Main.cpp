@@ -99,6 +99,9 @@ generateFood(food);   // tạo mồi ban đầu
 
     system("clear");
     while (1) {
+        gotoxy(0, 0);
+cout << "Score: " << score;
+
         // Vẽ mồi
 gotoxy(food.x, food.y);
 cout << "O";
