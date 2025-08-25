@@ -119,6 +119,7 @@ if (r.A[0].x == food.x && r.A[0].y == food.y) {
     r.snake_length++;
     r.A[r.snake_length - 1] = r.A[r.snake_length - 2]; 
     generateFood(food);  // tạo mồi mới
+    score += 10;   // tăng điểm mỗi lần ăn mồi
 }
 
         usleep(200000); // 200ms
