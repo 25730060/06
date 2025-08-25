@@ -1,49 +1,14 @@
 #include <iostream>
 #include <cstdlib>
-#include <unistd.h>   // sleep, usleep
-#include <termios.h>  // getch
-#include <fcntl.h>    // kbhit
-#include <ctime>   // để random mồi
+#include <windows.h>
+#include <conio.h>
+#include <ctime>
 using namespace std;
 
 void gotoxy(int column, int line) {
-    printf("\033[%d;%dH", line, column);
-}
-
-int getch() {
-    struct termios oldt, newt;
-    int ch;
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    ch = getchar();
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return ch;
-}
-
-int kbhit() {
-    struct termios oldt, newt;
-    int ch;
-    int oldf;
-
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-
-    ch = getchar();
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
-
-    if (ch != EOF) {
-        ungetc(ch, stdin);
-        return 1;
-    }
-    return 0;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD pos = { (SHORT)column, (SHORT)line };
+    SetConsoleCursorPosition(hConsole, pos);
 }
 
 struct Point {
@@ -86,7 +51,7 @@ void generateFood(Point &food) {
     food.x = rand() % 40 + 1;  // ngang
     food.y = rand() % 20 + 1;  // dọc
 }
-
+// TODO: Cần thêm xử lý game over khi rắn đụng tường hoặc tự cắn mình
 int main() {
     SNAKE r;
     Point food;
@@ -97,7 +62,7 @@ generateFood(food);   // tạo mồi ban đầu
     int direction = 0;
     char t;
 
-    system("clear");
+    system("cls");
     while (1) {
         gotoxy(0, 0);
 cout << "Score: " << score;
@@ -106,15 +71,15 @@ cout << "Score: " << score;
 gotoxy(food.x, food.y);
 cout << "@";
 
-        if (kbhit()) {
-            t = getch();
+        if (_kbhit()) {
+            t = _getch();
             if (t == 'a') direction = 2;
             if (t == 'w') direction = 3;
             if (t == 'd') direction = 0;
             if (t == 's') direction = 1;
             if (t == 'q') break;
         }
-        system("clear");
+        system("cls");
         r.Draw();
         r.Move(direction);
         // Kiểm tra ăn mồi
@@ -125,7 +90,7 @@ if (r.A[0].x == food.x && r.A[0].y == food.y) {
     score += 10;   // tăng điểm mỗi lần ăn mồi
 }
 
-        usleep(200000); // 200ms
+        Sleep(200); // 200ms
        
 
 
