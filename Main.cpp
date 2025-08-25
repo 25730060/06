@@ -104,7 +104,7 @@ cout << "Score: " << score;
 
         // Vẽ mồi
 gotoxy(food.x, food.y);
-cout << "O";
+cout << "@";
 
         if (kbhit()) {
             t = getch();
