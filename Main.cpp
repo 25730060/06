@@ -107,11 +107,11 @@ int main() {
 
     if (_kbhit()) {
             char t = _getch();
-            if (t == 'a') direction = 2;
-            if (t == 'w') direction = 3;
-            if (t == 'd') direction = 0;
-            if (t == 's') direction = 1;
-            if (t == 'q') break;
+            if (t == 'q' || t == 27) break;              // Q hoặc ESC thoát
+            if (t == 'a' && direction != 0) direction = 2; // không cho quay ngược từ phải -> trái ngay
+            if (t == 'd' && direction != 2) direction = 0; // không cho quay ngược từ trái -> phải
+            if (t == 'w' && direction != 1) direction = 3; // không cho quay ngược từ xuống -> lên
+            if (t == 's' && direction != 3) direction = 1; // không cho quay ngược từ lên -> xuống
         }
    // Di chuyển
     r.Move(direction);
