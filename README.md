@@ -1,5 +1,5 @@
 ﻿# **GAME CON RẮN (SNAKE GAME) - C++ VERSION**
-Dự án này là bài tập thực hành cho môn học Kỹ năng nghề nghiệp, được phát triển bằng ngôn ngữ **C++** và thư viện **SFML**. Mục tiêu của dự án là tái hiện lại trò chơi Con Rắn kinh điển, qua đó áp dụng và củng cố kiến thức về lập trình hướng đối tượng, quản lý bộ nhớ, và xử lý đồ họa trong C++.
+Dự án này là bài tập thực hành cho môn học Kỹ năng nghề nghiệp, được phát triển bằng ngôn ngữ **C++**. Mục tiêu của dự án là tái hiện lại trò chơi Con Rắn kinh điển, qua đó áp dụng và củng cố kiến thức về lập trình hướng đối tượng, quản lý bộ nhớ, và xử lý đồ họa trong C++.
 ## **Mục lục**
 - [Công nghệ sử dụng](#công-nghệ-sử-dụng)
 - [Các tính năng chính](#các-tính-năng-chính)
