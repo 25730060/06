@@ -116,13 +116,13 @@ void drawFrame(int width, int height) {
     }
 }
 
- HEAD
 // Xoá phần bên trong khung (giữ viền) — giảm flicker
 void clearInside(int width, int height) {
     for (int y = 1; y < height - 1; ++y) {
         gotoxy(1, y);
         for (int x = 1; x < width - 1; ++x) cout << " ";
     }
+}
 
 // Show menu chọn chế độ chơi
 // Mode 1: Đụng tường Game Over
@@ -141,7 +141,6 @@ int showMenu() {
         if (choice == 1 || choice == 2) break;
     }
     return choice;
- origin/main
 }
 
 int main() {
