@@ -1,23 +1,46 @@
 ﻿# **GAME CON RẮN (SNAKE GAME) - C++ VERSION**
+
 Dự án này là bài tập thực hành cho môn học Kỹ năng nghề nghiệp, được phát triển bằng ngôn ngữ **C++**. Mục tiêu của dự án là tái hiện lại trò chơi Con Rắn kinh điển, qua đó áp dụng và củng cố kiến thức về lập trình hướng đối tượng, quản lý bộ nhớ, và xử lý đồ họa trong C++.
+
 ## **Mục lục**
 - [Công nghệ sử dụng](#công-nghệ-sử-dụng)
 - [Các tính năng chính](#các-tính-năng-chính)
 - [Hướng dẫn chơi](#hướng-dẫn-chơi)
+- [Chế độ chơi](#chế-độ-chơi)
+
+---
+
 ## **Công nghệ sử dụng**
 * **Ngôn ngữ**: **C++** (khuyến nghị C++17 trở lên).
-* **Trình biên dịch**: GCC (MinGW trên Windows), Clang, hoặc MSVC (Visual Studio).
+* **Trình biên dịch**: GCC (MinGW-w64 trên Windows), Clang, hoặc MSVC (Visual Studio).
+* **Thư viện đồ họa**: **SFML** (dùng để dựng giao diện game).
+
+---
 
 ## **Các tính năng chính**
-
 * **Điều khiển linh hoạt**: Người chơi điều khiển rắn di chuyển theo 4 hướng (Lên, Xuống, Trái, Phải).
 * **Tính điểm**: Giao diện hiển thị điểm số hiện tại của người chơi.
 * **Phát hiện va chạm**: Trò chơi kết thúc khi rắn va chạm vào tường hoặc vào chính thân của nó.
+* **Chế độ va tường tùy chọn**: Cho phép chuyển đổi giữa *Game Over* khi đụng tường hoặc *Wrap Around* (đi xuyên qua và vòng lại từ phía đối diện).
 * **Giao diện đơn giản**: Giao diện đồ họa được dựng bằng thư viện SFML, rõ ràng và dễ hiểu.
 
-## **Hướng dẫn chơi**
+---
 
-* Sử dụng các phím mũi tên (`↑`, `↓`, `←`, `→`) hoặc phím `W`, `A`, `S`, `D` để điều khiển hướng di chuyển của rắn.
+## **Hướng dẫn chơi**
+* Sử dụng các phím `W`, `A`, `S`, `D` để điều khiển hướng di chuyển của rắn.
 * Mục tiêu là ăn các "mồi" xuất hiện ngẫu nhiên trên màn hình.
-* Tránh để rắn đâm vào các cạnh của màn hình chơi hoặc tự cắn vào thân.
+* Tránh để rắn đâm vào các cạnh của màn hình (tùy chế độ) hoặc tự cắn vào thân.
 * Cố gắng đạt được điểm số cao nhất!
+
+---
+
+## **Chế độ chơi**
+Trò chơi hỗ trợ **2 chế độ va tường**:
+
+1. **Wall Collision: Game Over**  
+   - Khi rắn chạm vào tường → Trò chơi kết thúc.  
+   - Đây là chế độ cổ điển, quen thuộc với hầu hết các phiên bản Snake.
+
+2. **Wall Collision: Wrap Around**  
+   - Khi rắn chạm vào tường, nó sẽ vòng lại và xuất hiện từ phía đối diện.  
+   - Giúp trò chơi trở nên linh hoạt hơn và mở rộng chiến lược điều khiển.  
