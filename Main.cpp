@@ -5,20 +5,23 @@
 #include <ctime>
 using namespace std;
 
-void gotoxy(int column, int line) {
+void gotoxy(int column, int line)
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD pos = { (SHORT)column, (SHORT)line };
+    COORD pos = {(SHORT)column, (SHORT)line};
     SetConsoleCursorPosition(hConsole, pos);
 }
 // Đưa con trỏ về góc trên cùng (0,0) — tránh phải xóa toàn màn hình
-void clearScreenToTopLeft() {
+void clearScreenToTopLeft()
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD pos = {0, 0};
     SetConsoleCursorPosition(hConsole, pos);
 }
 
 // Ẩn/hiện con trỏ (ẩn để màn hình đỡ nhấp nháy)
-void showCursor(bool visible) {
+void showCursor(bool visible)
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;
     GetConsoleCursorInfo(hConsole, &info);
@@ -27,61 +30,84 @@ void showCursor(bool visible) {
     SetConsoleCursorInfo(hConsole, &info);
 }
 
-
-struct Point {
+struct Point
+{
     int x, y;
 };
 
-class SNAKE {
+class SNAKE
+{
 public:
     Point A[100];
     int snake_length;
 
-    SNAKE() {
+    SNAKE()
+    {
         snake_length = 5;
-        A[0].x = 14; A[0].y = 10;
-        A[1].x = 13; A[1].y = 10;
-        A[2].x = 12; A[2].y = 10;
-        A[3].x = 11; A[3].y = 10;
-        A[4].x = 10; A[4].y = 10;
+        A[0].x = 14;
+        A[0].y = 10;
+        A[1].x = 13;
+        A[1].y = 10;
+        A[2].x = 12;
+        A[2].y = 10;
+        A[3].x = 11;
+        A[3].y = 10;
+        A[4].x = 10;
+        A[4].y = 10;
     }
 
-    void Draw() {
-        for (int i = 0; i < snake_length; i++) {
+    void Draw()
+    {
+        for (int i = 0; i < snake_length; i++)
+        {
             gotoxy(A[i].x, A[i].y);
             cout << (i == 0 ? "O" : "X"); // đầu khác thân
         }
     }
 
-    void Move(int direction) {
+    void Move(int direction)
+    {
 
         for (int i = snake_length - 1; i > 0; i--)
             A[i] = A[i - 1];
 
-        if (direction == 0) A[0].x = A[0].x + 1; // phải
-        if (direction == 1) A[0].y = A[0].y + 1; // xuống
-        if (direction == 2) A[0].x = A[0].x - 1; // trái
-        if (direction == 3) A[0].y = A[0].y - 1; // lên
+        if (direction == 0)
+            A[0].x = A[0].x + 1; // phải
+        if (direction == 1)
+            A[0].y = A[0].y + 1; // xuống
+        if (direction == 2)
+            A[0].x = A[0].x - 1; // trái
+        if (direction == 3)
+            A[0].y = A[0].y - 1; // lên
     }
 
     // Hàm xử lý game over
-    bool CheckGameOver(int width, int height, int mode) {
+    bool CheckGameOver(int width, int height, int mode)
+    {
         // Mode 1: Đụng tường Game Over
         // Mode 2: Đụng tường -> xuất hiện phía đối diện
-        if (mode == 1) {
+        if (mode == 1)
+        {
             // Đụng tường (khung có viền )
-            if (A[0].x <= 0 || A[0].x >= width-1 || A[0].y <= 0 || A[0].y >= height-1)
-                    return true;
-        } else {
+            if (A[0].x <= 0 || A[0].x >= width - 1 || A[0].y <= 0 || A[0].y >= height - 1)
+                return true;
+        }
+        else
+        {
             // Đụng tường -> xuất hiện phía đối diện
-            if (A[0].x <= 0) A[0].x = width - 2;
-            else if (A[0].x >= width - 1) A[0].x = 1;
-            if (A[0].y <= 0) A[0].y = height - 2;
-            else if (A[0].y >= height - 1) A[0].y = 1;
+            if (A[0].x <= 0)
+                A[0].x = width - 2;
+            else if (A[0].x >= width - 1)
+                A[0].x = 1;
+            if (A[0].y <= 0)
+                A[0].y = height - 2;
+            else if (A[0].y >= height - 1)
+                A[0].y = 1;
         }
 
         // Tự cắn thân
-        for (int i = 1; i < snake_length; i++) {
+        for (int i = 1; i < snake_length; i++)
+        {
             if (A[0].x == A[i].x && A[0].y == A[i].y)
                 return true;
         }
@@ -89,47 +115,63 @@ public:
     }
 
     // tránh mồi sinh trùng thân
-    bool occupies(int x, int y) {
+    bool occupies(int x, int y)
+    {
         for (int i = 0; i < snake_length; ++i)
-            if (A[i].x == x && A[i].y == y) return true;
+            if (A[i].x == x && A[i].y == y)
+                return true;
         return false;
     }
 };
 
 // Hàm tạo mồi random trong khung ( Trừ viền và vị trí rắn )
-void generateFood(Point &food, int width, int height, SNAKE &r) {
-    do {
-        food.x = rand() % (width  - 2) + 1;
+void generateFood(Point &food, int width, int height, SNAKE &r)
+{
+    do
+    {
+        food.x = rand() % (width - 2) + 1;
         food.y = rand() % (height - 2) + 1;
     } while (r.occupies(food.x, food.y));
 }
 
 // Vẽ khung
-void drawFrame(int width, int height) {
-    for (int x = 0; x < width; x++) {
-        gotoxy(x, 0); cout << "#";
-        gotoxy(x, height - 1); cout << "#";
+void drawFrame(int width, int height)
+{
+    for (int x = 0; x < width; x++)
+    {
+        gotoxy(x, 0);
+        cout << "#";
+        gotoxy(x, height - 1);
+        cout << "#";
     }
-    for (int y = 0; y < height; y++) {
-        gotoxy(0, y); cout << "#";
-        gotoxy(width - 1, y); cout << "#";
+    for (int y = 0; y < height; y++)
+    {
+        gotoxy(0, y);
+        cout << "#";
+        gotoxy(width - 1, y);
+        cout << "#";
     }
 }
 
 // Xoá phần bên trong khung (giữ viền) — giảm flicker
-void clearInside(int width, int height) {
-    for (int y = 1; y < height - 1; ++y) {
+void clearInside(int width, int height)
+{
+    for (int y = 1; y < height - 1; ++y)
+    {
         gotoxy(1, y);
-        for (int x = 1; x < width - 1; ++x) cout << " ";
+        for (int x = 1; x < width - 1; ++x)
+            cout << " ";
     }
 }
 
 // Show menu chọn chế độ chơi
 // Mode 1: Đụng tường Game Over
 // Mode 2: Đụng tường -> xuất hiện phía đối diện
-int showMenu() {
+int showMenu()
+{
     int choice = 0;
-    while (true) {
+    while (true)
+    {
         system("cls");
         cout << "\n";
         cout << "         SNAKE GAME          \n";
@@ -138,30 +180,33 @@ int showMenu() {
         cout << "2. Wall Collision: Wrap Around\n";
         cout << "Choose mode (1-2): ";
         cin >> choice;
-        if (choice == 1 || choice == 2) break;
+        if (choice == 1 || choice == 2)
+            break;
     }
     return choice;
 }
 
-int main() {
+int main()
+{
     const int WIDTH = 40, HEIGHT = 20; // khung bao gồm viền ngoài
     SNAKE r;
     Point food;
-    int score = 0;   // điểm ban đầu
+    int score = 0; // điểm ban đầu
     int direction = 0;
 
     // --- MENU ---
     int mode = showMenu(); // 1 = Game Over, 2 = Xuyên tường
 
-    srand(time(NULL));    // khởi tạo random seed
+    srand(time(NULL)); // khởi tạo random seed
     system("cls");
 
     clearScreenToTopLeft();
     showCursor(false);
     drawFrame(WIDTH, HEIGHT);
-    generateFood(food, WIDTH, HEIGHT, r);   // tạo mồi ban đầu
+    generateFood(food, WIDTH, HEIGHT, r); // tạo mồi ban đầu
 
- while (true) {
+    while (true)
+    {
         // Đưa con trỏ về (0,0) để bắt đầu vẽ frame mới (không dùng system("cls"))
         clearScreenToTopLeft();
 
@@ -169,41 +214,49 @@ int main() {
         drawFrame(WIDTH, HEIGHT);
         clearInside(WIDTH, HEIGHT);
 
-    if (_kbhit()) {
+        if (_kbhit())
+        {
             char t = _getch();
-            if (t == 'q' || t == 27) break;              // Q hoặc ESC thoát
-            if (t == 'a' && direction != 0) direction = 2; // không cho quay ngược từ phải -> trái ngay
-            if (t == 'd' && direction != 2) direction = 0; // không cho quay ngược từ trái -> phải
-            if (t == 'w' && direction != 1) direction = 3; // không cho quay ngược từ xuống -> lên
-            if (t == 's' && direction != 3) direction = 1; // không cho quay ngược từ lên -> xuống
+            if (t == 'q' || t == 27)
+                break; // Q hoặc ESC thoát
+            if (t == 'a' && direction != 0)
+                direction = 2; // không cho quay ngược từ phải -> trái ngay
+            if (t == 'd' && direction != 2)
+                direction = 0; // không cho quay ngược từ trái -> phải
+            if (t == 'w' && direction != 1)
+                direction = 3; // không cho quay ngược từ xuống -> lên
+            if (t == 's' && direction != 3)
+                direction = 1; // không cho quay ngược từ lên -> xuống
         }
-   // Di chuyển
-    r.Move(direction);
+        // Di chuyển
+        r.Move(direction);
 
-    // Kiểm tra Game Over
-    if (r.CheckGameOver(WIDTH, HEIGHT, mode)) {
-        gotoxy(0, HEIGHT + 1);
-        cout << "GAME OVER! Score = " << score << endl;
-        break;
-    }
+        // Kiểm tra Game Over
+        if (r.CheckGameOver(WIDTH, HEIGHT, mode))
+        {
+            gotoxy(0, HEIGHT + 1);
+            cout << "GAME OVER! Score = " << score << endl;
+            break;
+        }
 
-   // Kiểm tra ăn mồi
-    if (r.A[0].x == food.x && r.A[0].y == food.y) {
-        if (r.snake_length < 100) {
+        // Kiểm tra ăn mồi
+        if (r.A[0].x == food.x && r.A[0].y == food.y)
+        {
+            if (r.snake_length < 100)
+            {
                 r.A[r.snake_length] = r.A[r.snake_length - 1];
                 r.snake_length++;
+            }
+            score += 10;                          // tăng điểm mỗi lần ăn mồi
+            generateFood(food, WIDTH, HEIGHT, r); // tạo mồi mới
         }
-        score += 10;   // tăng điểm mỗi lần ăn mồi
-        generateFood(food, WIDTH, HEIGHT,r);  // tạo mồi mới
-    }
 
-    // Vẽ mồi + rắn
-    gotoxy(food.x, food.y);
-    cout << "@";
-    r.Draw();
+        // Vẽ mồi + rắn
+        gotoxy(food.x, food.y);
+        cout << "@";
+        r.Draw();
 
-
-    // Hiển thị điểm
+        // Hiển thị điểm
         gotoxy(0, HEIGHT);
         cout << "Score: " << score << " (WASD di chuyen, Q/ESC thoat)  ";
 
