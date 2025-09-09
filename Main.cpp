@@ -10,6 +10,23 @@ void gotoxy(int column, int line) {
     COORD pos = { (SHORT)column, (SHORT)line };
     SetConsoleCursorPosition(hConsole, pos);
 }
+// Đưa con trỏ về góc trên cùng (0,0) — tránh phải xóa toàn màn hình
+void clearScreenToTopLeft() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD pos = {0, 0};
+    SetConsoleCursorPosition(hConsole, pos);
+}
+
+// Ẩn/hiện con trỏ (ẩn để màn hình đỡ nhấp nháy)
+void showCursor(bool visible) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    GetConsoleCursorInfo(hConsole, &info);
+    info.bVisible = visible ? TRUE : FALSE;
+    info.dwSize = 20;
+    SetConsoleCursorInfo(hConsole, &info);
+}
+
 
 struct Point {
     int x, y;
@@ -95,15 +112,12 @@ int main() {
 
     srand(time(NULL));    // khởi tạo random seed
     system("cls");
+
+    clearScreenToTopLeft();
+    showCursor(false);
     drawFrame(WIDTH, HEIGHT);
     generateFood(food, WIDTH, HEIGHT, r);   // tạo mồi ban đầu
-  // Vòng lặp chính của game
-    while (true) {
-        // Xoá bên trong khung (không xoá viền)
-        for (int y = 1; y < HEIGHT-1; ++y) {
-            gotoxy(1, y);
-            for (int x = 1; x < WIDTH-1; ++x) cout << " ";
-        }
+
 
     if (_kbhit()) {
             char t = _getch();
@@ -143,7 +157,8 @@ r.Draw();
         gotoxy(0, HEIGHT);
         cout << "Score: " << score << " (WASD di chuyen, Q/ESC thoat)  ";
 
-        Sleep(200); // 200ms
+        Sleep(180); // 200ms
     }
+    showCursor(true);
     return 0;
 }
