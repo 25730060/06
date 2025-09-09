@@ -103,6 +103,14 @@ void drawFrame(int width, int height) {
     }
 }
 
+// Xoá phần bên trong khung (giữ viền) — giảm flicker
+void clearInside(int width, int height) {
+    for (int y = 1; y < height - 1; ++y) {
+        gotoxy(1, y);
+        for (int x = 1; x < width - 1; ++x) cout << " ";
+    }
+}
+
 int main() {
     const int WIDTH = 40, HEIGHT = 20; // khung bao gồm viền ngoài
     SNAKE r;
@@ -118,6 +126,13 @@ int main() {
     drawFrame(WIDTH, HEIGHT);
     generateFood(food, WIDTH, HEIGHT, r);   // tạo mồi ban đầu
 
+ while (true) {
+        // Đưa con trỏ về (0,0) để bắt đầu vẽ frame mới (không dùng system("cls"))
+        clearScreenToTopLeft();
+
+        // Vẽ khung và xoá phần trong khung (ít nhấp nháy hơn)
+        drawFrame(WIDTH, HEIGHT);
+        clearInside(WIDTH, HEIGHT);
 
     if (_kbhit()) {
             char t = _getch();
