@@ -67,7 +67,6 @@ public:
 
     void Move(int direction)
     {
-
         for (int i = snake_length - 1; i > 0; i--)
             A[i] = A[i - 1];
 
@@ -88,7 +87,7 @@ public:
         // Mode 2: Đụng tường -> xuất hiện phía đối diện
         if (mode == 1)
         {
-            // Đụng tường (khung có viền )
+            // Đụng tường (khung có viền)
             if (A[0].x <= 0 || A[0].x >= width - 1 || A[0].y <= 0 || A[0].y >= height - 1)
                 return true;
         }
@@ -195,6 +194,7 @@ int main()
     int direction = 0;
 
     // --- MENU ---
+    drawFrame(WIDTH, HEIGHT);
     int mode = showMenu(); // 1 = Game Over, 2 = Xuyên tường
 
     srand(time(NULL)); // khởi tạo random seed
